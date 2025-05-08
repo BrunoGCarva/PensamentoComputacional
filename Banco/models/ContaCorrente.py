@@ -15,38 +15,44 @@ class ContaCorrente:
         self.saldo = saldo
         self.limite = limite
         self.historico = historico
-    def depositar(self, valor):
+    def depositar(self, valor, remetente = None):
         """
         método que realiza do depósito na conta bancária.
-        Entrada: valor(float)
+        Entrada: valor(float), destinatário (Str) 
         return:True, se a operação foi realizada com sucesso. False, se a operação não foi realizada.
         """
+        op= 1
+        if remetente != None:
+            op = 2
         if valor > 0:
             self.saldo += valor
             self.historico.append({
-                "operacao": 1,
-                "remetente": self.titular,
-                "destinatario": "",
+                "operacao": op,
+                "remetente": remetente,
+                "destinatario": self.titular,
                 "valor":valor,
                 "saldo":self.saldo,
-                "data e tempo":int(time.time),
+                "data e tempo":int(time.time()),
                 })
             return True
         else:
             print(f" O valor {valor} é inválido")
             return False
-    def sacar(self, valor):
+    def sacar(self, valor, destinatario = None):
         """
         método que realiza do depósito na conta bancária.
-        Entrada: valor(float)
+        Entradas: valor(float) e destinatário (Str)
         return:True, se a operação foi realizada com sucesso. False, se a operação não foi realizada.
         """
+        op = 0
+        if destinatario != None:
+            op = 2
         if valor <= self.saldo:
             self.saldo -= valor
             self.historico.append({
                 "operacao": 0,
                 "remetente": self.titular,
-                "destinatario": "",
+                "destinatario": destinatario,
                 "valor":valor,
                 "saldo":self.saldo,
                 "data e tempo":int(time.time()),
@@ -65,28 +71,16 @@ class ContaCorrente:
             else:
                 print("Operação com limite cancelada !")
         return False
-    def transferencia(self, conta_destino, valor):
-        if valor > 0 and valor <= self.saldo:
-            self.saldo -= valor
-            self.depositar(valor)
-            conta_destino.saldo += valor
-            
-            self.historico.append({
-                "operacao": 2,
-                "remetente": self.titular,
-                "destinatario": conta_destino.titular,
-                "valor": valor,
-                "saldo": self.saldo,
-                "data e tempo": int(time.time()),
-            })
-            print("Transferência realizada com sucesso!")
-            return True
-        elif valor > self.saldo:
-            print("Saldo insuficiente!")
-        else:
-            print(f"Valor inválido para transferência: {valor}")
-        return False
-    
+    def transferir(self, destinatario, valor):
+        """
+        Objetivo: método para transferir um valor entre duas contas.
+        Entradas: valor (float) e obj do destinatário
+        Saída: True se ok, False se NOK
+        """
+        if self.sacar(valor, destinatario.titular):
+            destinatario.depositar(valor, self.titular)
+        
+        
     def exibir_historico(self):
         print("Histórico de Transações:")
         for transacao in self.historico:
@@ -97,3 +91,4 @@ class ContaCorrente:
                   "Valor: ",transacao['valor'],
                   "Saldo: ",transacao['saldo'], 
                   "Data e Hora: ", str(dt.tm_hour) + ":" + str(dt.tm_min) + ":" + str(dt.tm_sec) + " " + str(dt.tm_mday) + "/" + str(dt.tm_mon) + "/" + str(dt.tm_year))
+            
