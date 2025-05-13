@@ -11,12 +11,12 @@ class ContaCorrente:
         """
         Construtor da classe CntaBancária
         """
-        self.__titular = titular
-        self.__saldo = saldo
-        self.__limite = limite
-        self.__historico = historico
+        self.titular = titular
+        self.saldo = saldo
+        self.limite = limite
+        self.historico = historico
     def __str_(self):
-        return f"Titular: {self.__titular}, Saldo: {self.__saldo}, Limite: {self.__limite}"
+        return f"Titular: {self.titular}, Saldo: {self.saldo}, Limite: {self.limite}"
     def depositar(self, valor:float, remetente:str = None) -> bool:
         """
         método que realiza do depósito na conta bancária.
@@ -31,9 +31,9 @@ class ContaCorrente:
             self.__historico.append({
                 "operacao": op,
                 "remetente": remetente,
-                "destinatario": self.__titular,
+                "destinatario": self.titular,
                 "valor":valor,
-                "saldo":self.__saldo,
+                "saldo":self.saldo,
                 "data e tempo":int(time.time()),
                 })
             return True
@@ -49,14 +49,14 @@ class ContaCorrente:
         op = 0
         if destinatario != None:
             op = 2
-        if valor <= self.__saldo:
-            self.__saldo -= valor
-            self.__historico.append({
+        if valor <= self.saldo:
+            self.saldo -= valor
+            self.historico.append({
                 "operacao": 0,
-                "remetente": self.__titular,
+                "remetente": self.titular,
                 "destinatario": destinatario,
                 "valor":valor,
-                "saldo":self.__saldo,
+                "saldo":self.saldo,
                 "data e tempo":int(time.time()),
                 })
             
@@ -65,7 +65,7 @@ class ContaCorrente:
         else:
             a = input("deseja usar o limite? ({self.___limite}) [s para sim]")
             if a == 's':
-                if (self.__saldo + self.___limite) >= valor:
+                if (self.__saldo + self.limite) >= valor:
                     self.__saldo -= valor
                     return True
                 else:
@@ -80,12 +80,12 @@ class ContaCorrente:
         Saída: True se ok, False se NOK
         """
         if self.sacar(valor, destinatario.titular):
-            destinatario.depositar(valor, self.__titular)
+            destinatario.depositar(valor, self.titular)
         
         
     def exibir_historico(self)->None:
         print("Histórico de Transações:")
-        for transacao in self.__historico:
+        for transacao in self.historico:
             dt = time.localtime(transacao['data e tempo'])
             print("Op: ",transacao['operacao'],
                   "Remetente: ",transacao['remetente'],
