@@ -7,8 +7,12 @@ Utilizar a Classe ContaBancaria para criar um menu no main.py, onde necessita te
 - 4 realizar transferência
 - 5: excluir conta (solicitar conta para transferir o saldo restante, ou depositar o que falta para zerar a conta)
 """
+
 Banco = []
 a = 0
+for conta in Banco:
+    if conta.getTitular() == titular:
+        print(conta)
 while a != 6:
     a = int(input("Informe a operação que deseja realizar\n1 para criar conta \n2 para sacar \n3 para depositar \n4 para realizar transferência \n5 para excluir conta\n"))
     if a == 1:
