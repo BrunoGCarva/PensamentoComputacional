@@ -1,14 +1,6 @@
 from models.Veiculos import Veiculos
-
-
-gol = Veiculos("Gol Copa", "Volkswagen","IND-1010",2006, "Amarelo", 0 , 0, 0)
-
-gol.Exibir_Info
-gol.acelerar()
-gol.Exibir_Info
-gol.acelerar()
-gol.Exibir_Info
-gol.frear()
-gol.Exibir_Info
-gol.AlterarPlaca("IND1A10")
-gol.Exibir_Info()
+from models.CarrosCombustao import CarrosCombustao
+voyage = Veiculos("BCE9D36","Voyage","Volkswagen", 2018, "Vermelho", 47793)
+jetta_gli = CarrosCombustao("JDM9D36","Jetta GLI","Volkswagen",2025,"Vermelho", 25000,"Gasolina",4,5,2000,"AT 7")
+print(voyage)
+print(jetta_gli)

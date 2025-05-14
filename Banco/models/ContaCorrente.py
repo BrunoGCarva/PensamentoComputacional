@@ -7,7 +7,7 @@ class ContaCorrente:
     OBS: Operações no histórico: 0 - sacar, 1- depositar, 2 - transferir
     """
     
-    def __init__(self,titular:str, saldo:float, limite:float,historico:list)->None:
+    def __init__(self,titular:str, saldo:float, limite:float,historico:list,chavepix:str)->None:
         """
         Construtor da classe CntaBancária
         """
@@ -15,6 +15,7 @@ class ContaCorrente:
         self.saldo = saldo
         self.limite = limite
         self.historico = historico
+        self.chavepix = chavepix
     def __str_(self):
         return f"Titular: {self.titular}, Saldo: {self.saldo}, Limite: {self.limite}"
     def depositar(self, valor:float, remetente:str = None) -> bool:
@@ -27,13 +28,14 @@ class ContaCorrente:
         if remetente != None:
             op = 2
         if valor > 0:
-            self.__saldo += valor
-            self.__historico.append({
+            self.saldo += valor
+            self.historico.append({
                 "operacao": op,
                 "remetente": remetente,
                 "destinatario": self.titular,
                 "valor":valor,
                 "saldo":self.saldo,
+                "Chave PIX":self.chavepix,
                 "data e tempo":int(time.time()),
                 })
             return True
@@ -65,8 +67,8 @@ class ContaCorrente:
         else:
             a = input("deseja usar o limite? ({self.___limite}) [s para sim]")
             if a == 's':
-                if (self.__saldo + self.limite) >= valor:
-                    self.__saldo -= valor
+                if (self.saldo + self.limite) >= valor:
+                    self.saldo -= valor
                     return True
                 else:
                     print("Saldo e limite insuficiente!")
@@ -93,4 +95,14 @@ class ContaCorrente:
                   "Valor: ",transacao['valor'],
                   "Saldo: ",transacao['saldo'], 
                   "Data e Hora: ", str(dt.tm_hour) + ":" + str(dt.tm_min) + ":" + str(dt.tm_sec) + " " + str(dt.tm_mday) + "/" + str(dt.tm_mon) + "/" + str(dt.tm_year))
-            
+    def pix(self, valor:float, remetente:str)->bool:
+        """
+        Método para realizar uma transferência via PIX.
+        Entradas: valor(float) e remetente (str)
+        Saída: True se ok, False se NOK
+        """
+        if self.sacar(valor, remetente):
+            self.depositar(valor, remetente)
+            return True
+        else:
+            return False

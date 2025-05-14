@@ -18,6 +18,7 @@ def menu():
         print("5 - Transferência")
         print("6 - Exibir histórico de transações")
         print("7 - Excluir conta")
+        print("8 - Transferência PIX")
         print("0 - Sair")
 
         escolha = input("Escolha uma opção: ")
@@ -26,7 +27,8 @@ def menu():
             titular = input("Nome do titular: ")
             saldo = float(input("Saldo inicial: "))
             limite = float(input("Limite da conta: "))
-            nova_conta = ContaCorrente(titular, saldo, limite, [])
+            chavepix = input("Chave PIX: ")
+            nova_conta = ContaCorrente(titular, saldo, limite, [],chavepix)
             banco.append(nova_conta)
             print("Conta criada com sucesso!")
 
@@ -96,9 +98,17 @@ def menu():
                     print("Conta excluída com sucesso.")
             else:
                 print("Conta não encontrada.")
-
-        elif escolha == "0":
-            print("Saindo...")
+        elif escolha == "8":
+            remetente_nome = input("Nome do remetente: ")
+            destinatariopix = input("Insira o pix do destinatário: ")
+            valor = float(input("Valor a transferir: "))
+            remetente = encontrar_conta(remetente_nome)
+            destinatario = next((conta for conta in banco if conta.chavepix == destinatariopix), None)
+            if remetente and destinatario:
+                remetente.pix(destinatario, valor)
+            else:
+                print("Conta(s) não encontrada(s).")
+        elif escolha == "11":
             break
         else:
             print("Opção inválida.")
