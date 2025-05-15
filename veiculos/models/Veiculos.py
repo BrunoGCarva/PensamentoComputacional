@@ -23,3 +23,10 @@ class Veiculos:
     def getPlaca(self) -> str:
         """Retira a placa"""
         return self.__placa
+    def setValorFipe(self, valor:float) -> None:
+        """Metodo que altera o valor da fipe do veiculo
+        Argumento: valor(float): nova valor da Fipe
+        Saída: True se ok
+        """
+        self.__valor_fipe = valor
+        return True
