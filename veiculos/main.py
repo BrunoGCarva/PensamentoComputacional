@@ -6,84 +6,29 @@ from models.Carro import Carro
 from models.Moto import Moto
 from models.Caminhao import Caminhao
 from models.Frota import Frota
-"""
-# Criando instâncias de cada classe
-voyage = Veiculos("BCE9D36", "Voyage", "Volkswagen", 2018, "Vermelho", 47793)
 
-# Criando um carro a combustão
-jetta_gli = CarroCombustao(placa="JDM9D36",
-                           modelo="Jetta GLI",
-                           marca="Volkswagen",
-                           ano=2025,
-                           cor="Vermelho",
-                           valor_fipe=250000,
-                           combustivel="Gasolina",
-                           nPortas=4,
-                           nAssentos=5,
-                           nCilindrada=2000,
-                           nCambio="AT 7",
-                           nivel_combustivel=24)
 
-# Criando um carro elétrico
-tesla_model_s = CarroEletrico(placa="JDN0A00",
-                              modelo="Tesla Model S",
-                              marca="Tesla",
-                              ano=2021,
-                              cor="Branco",
-                              valor_fipe=950000,
-                              nAssentos=5,
-                              nPortas=4,
-                              nivel_bateria=65,
-                              tipo_bateria="Lítio",
-                              autonomia=491)
+carro1 = Carro("ABC1234", "Onix", "Chevrolet", 2022, "Branco", 60000.0, 100)
+moto1 = Moto("XYZ5678", "Fazer", "Yamaha", 2020, "Preta", 20000.0, 200)
+caminhao1 = Caminhao("DEF3456", "FH", "Volvo", 2019, "Cinza", 450000.0, 300)
+carroElet = CarroEletrico("CCC1234", "Tesla", "Tesla", 2023, "Vermelho", 300000, 5, 4, 90, "Lítio", 400)
 
-# Criando um carro convertido em elétrico (combustão + elétrico)
-# (herança múltipla)
-fusca_eletrico = CarroConvEletrico(placa="IAA0D36",
-                                   modelo="Fusca 1600 Elétrico",
-                                   marca="Volkswagen",
-                                   ano=1975,
-                                   cor="Azul",
-                                   valor_fipe=70000,
-                                   combustivel="Gasolina",
-                                   nPortas=4,
-                                   nAssentos=5,
-                                   nCilindrada=1600,
-                                   nCambio="MT 4",
-                                   nivel_combustivel=24,
-                                   tipo_bateria="Lítio",
-                                   autonomia=150,
-                                   nivel_bateria=65)
+frota = Frota(carro1)
+frota.add_veiculo(moto1)
+frota.add_veiculo(caminhao1)
+frota.consumo_Total(100)
+print("Consumo total da frota:", frota.consumo_Total(100), "litros")
+"""
 
-# Exibindo as informações dos veículos
-print("Informações dos veículos: ")
-print("\n\n######## Veículo: #########")
-print(voyage)
-print("\n\n######## Carro a combustão: #########")
-print(jetta_gli)
-print("\n\n######## Carro elétrico: #########")
-print(tesla_model_s)
-print("\n\n######## Carro convertido em elétrico: #########")
-print(fusca_eletrico)
-# Abastecendo o carro a combustão
-jetta_gli.abastecer(10)
-print(jetta_gli)
-# Abastecendo o carro convertido em elétrico
-fusca_eletrico.abastecer(10)
-# Exibindo as informações do carro convertido em elétrico
-print("\n\n######## Carro conv. elétrico após abastecimento: #########")
-print(fusca_eletrico)
-"""
-"""
-Moto1 = Moto("ABC1234", "Fazer", "Yamaha", 2020, "Preto", 15000,20)
-Moto1.calcular_consumo(20)
-print(Moto1)
-"""
-"""
-carro1 = Carro("ABC1234", "Fusca", "Volkswagen", 1975, "Azul", 15000,20)
-carro1.calcular_consumo()
-print(carro1)
-"""
-frota = Frota(Veiculos)
-cam = Caminhao("ABC1234", "Fusca", "Volkswagen", 1975, "Azul", 15000, 20)
-Frota.add_veiculo(cam)
+
+print(carro1==moto1)
+carro1.set_Placa("ABC1235")
+print(carro1.get_Placa())
+
+carroElet.recarregar(10)
+print(carroElet)
+veiculos = [carro1, moto1, carroElet]
+distancia = 100
+for v in veiculos:
+    print(f"Consumo de {v.get_Placa()} para {distancia} km: {v.calcular_consumo(distancia)}")
+    """

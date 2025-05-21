@@ -1,32 +1,9 @@
 from .Veiculos import Veiculos
 
-
 class CarroEletrico(Veiculos):
-    """Classe que implementa métodos específicos de carros elétricos
-    Argumento: Classe pai Veiculo
-    """
-
-    def __init__(self,
-                 placa: str,
-                 modelo: str,
-                 marca: str,
-                 ano: int,
-                 cor: str,
-                 valor_fipe: float,
-                 nAssentos: int,
-                 nPortas: int,
-                 nivel_bateria: int,
-                 tipo_bateria: str,
-                 autonomia: int):
- 
-        Veiculos.__init__(self,
-                          placa=placa,
-                          modelo=modelo,
-                          marca=marca,
-                          ano=ano,
-                          cor=cor,
-                          valor_fipe=valor_fipe)
-        
+    def __init__(self, placa, modelo, marca, ano, cor, valor_fipe,
+                 nAssentos, nPortas, nivel_bateria, tipo_bateria, autonomia):
+        super().__init__(placa, modelo, marca, ano, cor, valor_fipe, 0)
         self.__nAssentos = nAssentos
         self.__nPortas = nPortas
         self.__nivel_bateria = nivel_bateria
@@ -42,11 +19,19 @@ class CarroEletrico(Veiculos):
         infos += f"Autonomia: {self.__autonomia}\n"
         return infos
 
-    def get_nivel_bateria(self):
+    def get_nivel_bateria(self): 
         return self.__nivel_bateria
-
-    def get_tipo_bateria(self):
+    def get_tipo_bateria(self): 
         return self.__tipo_bateria
-
-    def get_autonomia(self):
+    def get_autonomia(self): 
         return self.__autonomia
+    def calcular_consumo(self, distancia: float) -> float:
+        consumo_por_km = 0.15
+        return distancia * consumo_por_km
+    def recarregar(self, percentual_adicionado: float) -> bool:
+        novo = self.__nivel_bateria + percentual_adicionado
+        if novo <= 100:
+            self.__nivel_bateria = novo
+            return True
+
+        
