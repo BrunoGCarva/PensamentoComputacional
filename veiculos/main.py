@@ -4,6 +4,8 @@ from models.CarroEletrico import CarroEletrico
 from models.CarroConvEletrico import CarroConvEletrico
 from models.Carro import Carro
 from models.Moto import Moto
+from models.Caminhao import Caminhao
+from models.Frota import Frota
 """
 # Criando instâncias de cada classe
 voyage = Veiculos("BCE9D36", "Voyage", "Volkswagen", 2018, "Vermelho", 47793)
@@ -72,6 +74,16 @@ fusca_eletrico.abastecer(10)
 print("\n\n######## Carro conv. elétrico após abastecimento: #########")
 print(fusca_eletrico)
 """
-
+"""
 Moto1 = Moto("ABC1234", "Fazer", "Yamaha", 2020, "Preto", 15000,20)
 Moto1.calcular_consumo(20)
+print(Moto1)
+"""
+"""
+carro1 = Carro("ABC1234", "Fusca", "Volkswagen", 1975, "Azul", 15000,20)
+carro1.calcular_consumo()
+print(carro1)
+"""
+frota = Frota(Veiculos)
+cam = Caminhao("ABC1234", "Fusca", "Volkswagen", 1975, "Azul", 15000, 20)
+Frota.add_veiculo(cam)

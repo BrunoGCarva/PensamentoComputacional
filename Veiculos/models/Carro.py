@@ -16,7 +16,7 @@ class Carro(Veiculos):
         infos += f"Ano: {self.__ano}\n"
         infos += f"Cor: {self.__cor}\n"
         infos += f"Valor Fipe: {self.__valor_fipe}\n"
-        infos += f"Consumo: {self.distancia /20}\n"
+        infos += f"Consumo: {self.distancia /12}\n"
         return infos
     def calcular_consumo(self,distancia:float) -> float:
         consumo = 12 
