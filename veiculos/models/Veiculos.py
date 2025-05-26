@@ -1,3 +1,4 @@
+from .PlacaInvalidaException  import PlacaInvalidaException
 class Veiculos:
     """
     Classe com as principais funcionalidades do sistema de veiculos, como placas, veiculos, etc.
@@ -29,9 +30,14 @@ class Veiculos:
         letras = nova_placa[:3]
         numeros = nova_placa[3:]
 
-        if letras.isalpha() and numeros.isdigit():
-            self.__placa = nova_placa
-            return True
+        if (len(nova_placa) == 7 and
+            nova_placa[:3].isalpha() and
+            nova_placa[3].isdigit() and
+            nova_placa[4:].isdigit()):
+            self.__placa = nova_placa.upper()
+        else:
+            raise PlacaInvalidaException()
+
         return False
     def setValorFipe(self, valor: float) -> None:
         self.__valor_fipe = valor
