@@ -6,7 +6,7 @@ def main():
     try:
         nome = input("Digite o nome do produto: ")
         preco = float(input("Digite o preço do produto em BRL: "))
-        tipo = input("Tipo do produto ('alimenticio' ou 'eletronico'): ").strip().lower()
+        tipo = input("Tipo do produto ('alimenticio' ou 'eletronico'): ").lower()
 
         if tipo == "alimenticio":
             produto = ProdutoAlimenticio(nome, preco)
@@ -22,8 +22,6 @@ def main():
             convertido = conversor.converte_preco_para_usd(produto)
             if convertido:
                 print("Preço convertido para USD com sucesso!")
-            else:
-                print("O produto já está em USD. Nenhuma conversão foi feita.")
         except MoedaInvalidaError as e:
             print(f"Erro de conversão: {e}")
 
