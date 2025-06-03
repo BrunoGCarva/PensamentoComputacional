@@ -19,11 +19,11 @@ class CarroCombustao(Veiculos):
         infos += f"Número de cilindrada: {self.__nCilindrada}\n"
         infos += f"Câmbio: {self.__nCambio}\n"
         infos += f"Nível Combustível: {self.__nivel_combustivel}\n"
-        return infos
+        return infos    
 
     def abastecer(self, percentual_adicionado: int) -> bool:
         novo = self.__nivel_combustivel + percentual_adicionado
         if novo <= 100:
             self.__nivel_combustivel = novo
             return True
-        return False
+        return False 

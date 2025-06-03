@@ -6,7 +6,7 @@ import tkinter as tk
 from tkinter import ttk, messagebox
 import re
 from datetime import datetime
-
+from models.Proprietario import Proprietario
 # Classe principal
 class SistemaVeiculos:
     def __init__(self, root):
@@ -17,6 +17,7 @@ class SistemaVeiculos:
         
         # Lista para armazenar os veículos cadastrados
         self.veiculos = []
+        self.proprietarios = []
         
         # Configura o container para as telas
         self.container = tk.Frame(root)
@@ -31,16 +32,20 @@ class SistemaVeiculos:
         self.tela_cadastro = tk.Frame(self.container)
         self.tela_cadastro_proprietario = tk.Frame(self.container)
         self.tela_listagem = tk.Frame(self.container)
-        
+        self.tela_listagem_proprietario = tk.Frame(self.container)
+        self.tela_listagem_proprietario.grid(row=0, column=0)
+        self.configurar_tela_listagem_proprietario()
+
         # Posiciona as telas no mesmo local
-        for tela in (self.tela_principal, self.tela_cadastro,self.tela_cadastro_proprietario, self.tela_listagem):
+        for tela in (self.tela_principal, self.tela_cadastro,self.tela_cadastro_proprietario, self.tela_listagem,self.tela_listagem_proprietario):
             tela.grid(row=0, column=0, sticky="nsew")
         
         # Configura cada tela
         self.configurar_tela_principal()
         self.configurar_tela_cadastro()
-        #self.configurar_tela_cadastro_proprietario()
+        self.configurar_tela_cadastro_proprietario()
         self.configurar_tela_listagem()
+        
         
         # Mostrar a tela principal
         self.mostrar_tela(self.tela_principal)
@@ -65,7 +70,13 @@ class SistemaVeiculos:
         btn_listar = tk.Button(frame, text="Listar Veículos", width=25, height=2,
                               command=lambda: self.atualizar_listagem())
         btn_listar.pack(pady=10)
-        
+        btn_cadastrar_prop = tk.Button(frame, text="Cadastrar Proprietário", width=25, height=2,
+                               command=lambda: self.mostrar_tela(self.tela_cadastro_proprietario))
+        btn_cadastrar_prop.pack(pady=10)
+
+        btn_listar_prop = tk.Button(frame, text="Listar Proprietários", width=25, height=2,command=self.atualizar_listagem_proprietarios)
+        btn_listar_prop.pack(pady=10)
+
         btn_sair = tk.Button(frame, text="Sair", width=25, height=2,
                            command=self.root.quit)
         btn_sair.pack(pady=10)
@@ -144,7 +155,27 @@ class SistemaVeiculos:
         
         tk.Button(botoes_frame, text="Salvar", width=10,
                 command=self.salvar_veiculo).pack(side="left", padx=10)
-    
+    def configurar_tela_cadastro_proprietario(self):
+        titulo = tk.Label(self.tela_cadastro_proprietario, text="CADASTRO DE PROPRIETÁRIO", font=("Arial", 16, "bold"))
+        titulo.pack(pady=20)
+
+        frame = tk.Frame(self.tela_cadastro_proprietario, padx=20)
+        frame.pack()
+
+        tk.Label(frame, text="Nome:").grid(row=0, column=0, sticky="e", pady=5)
+        self.nome_prop_entry = tk.Entry(frame, width=30)
+        self.nome_prop_entry.grid(row=0, column=1, pady=5)
+
+        tk.Label(frame, text="CPF (000.000.000-00):").grid(row=1, column=0, sticky="e", pady=5)
+        self.cpf_prop_entry = tk.Entry(frame, width=20)
+        self.cpf_prop_entry.grid(row=1, column=1, pady=5)
+
+        botoes = tk.Frame(self.tela_cadastro_proprietario)
+        botoes.pack(pady=15)
+
+        tk.Button(botoes, text="Cancelar", command=lambda: self.mostrar_tela(self.tela_principal)).pack(side="left", padx=10)
+        tk.Button(botoes, text="Salvar", command=self.salvar_proprietario).pack(side="left", padx=10)
+
     def mostrar_campos_especificos(self):
         # Esconder todos os frames de campos específicos
         self.frame_carro.pack_forget()
@@ -202,8 +233,29 @@ class SistemaVeiculos:
                 command=self.ver_detalhes).pack(side="left", padx=5)
         
         tk.Button(botoes_frame, text="Voltar", width=12,
-                command=lambda: self.mostrar_tela(self.tela_principal)).pack(side="left", padx=5)
-    
+          command=lambda: self.mostrar_tela(self.tela_principal)).pack(side="left", padx=5)
+    def configurar_tela_listagem_proprietario(self):
+        titulo = tk.Label(self.tela_listagem_proprietario, text="PROPRIETÁRIOS CADASTRADOS", font=("Arial", 16, "bold"))
+        titulo.pack(pady=20)
+
+        frame = tk.Frame(self.tela_listagem_proprietario, padx=20)
+        frame.pack(fill="both", expand=True)
+
+        scrollbar = tk.Scrollbar(frame)
+        scrollbar.pack(side="right", fill="y")
+
+        self.listbox_proprietarios = tk.Listbox(frame, width=80, height=15, font=("Arial", 10))
+        self.listbox_proprietarios.pack(side="left", fill="both", expand=True)
+
+        self.listbox_proprietarios.config(yscrollcommand=scrollbar.set)
+        scrollbar.config(command=self.listbox_proprietarios.yview)
+
+        botoes = tk.Frame(self.tela_listagem_proprietario)
+        botoes.pack(pady=15)
+
+        tk.Button(botoes, text="Voltar", width=12,
+          command=lambda: self.mostrar_tela(self.tela_principal)).pack(side="left", padx=5)
+
     def salvar_veiculo(self):
         # Obter dados comuns
         placa = self.placa_entry.get().strip().upper()
@@ -294,12 +346,40 @@ class SistemaVeiculos:
         
         # Voltar para a tela principal
         self.mostrar_tela(self.tela_principal)
-    
+    def salvar_proprietario(self):
+        nome = self.nome_prop_entry.get().strip()
+        cpf = self.cpf_prop_entry.get().strip()
+
+        if not nome or not cpf:
+            messagebox.showwarning("Dados incompletos", "Preencha todos os campos!")
+            return
+
+        try:
+            novo = Proprietario(nome, cpf)
+        except ValueError as e:
+            messagebox.showerror("Erro", str(e))
+            return
+
+        self.proprietarios.append(novo)
+        messagebox.showinfo("Sucesso", "Proprietário cadastrado com sucesso!")
+
+        self.nome_prop_entry.delete(0, "end")
+        self.cpf_prop_entry.delete(0, "end")
+        self.mostrar_tela(self.tela_principal)
+
     def atualizar_listagem(self):
         # Atualizar a listagem e mostrar a tela
         self.filtrar_veiculos()
         self.mostrar_tela(self.tela_listagem)
-    
+    def atualizar_listagem_proprietarios(self):
+        self.listbox_proprietarios.delete(0, tk.END)  # Limpa a listbox
+        if not self.proprietarios:
+            self.listbox_proprietarios.insert(tk.END, "Nenhum proprietário cadastrado.")
+        else:
+            for prop in self.proprietarios:
+                self.listbox_proprietarios.insert(tk.END, str(prop))
+        self.mostrar_tela(self.tela_listagem_proprietario)
+
     def filtrar_veiculos(self):
         # Limpar a lista
         self.listbox.delete(0, "end")
