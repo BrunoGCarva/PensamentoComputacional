@@ -1,11 +1,7 @@
 from sqlalchemy import create_engine
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
-from models.models import Usuario
-
-Base = declarative_base()
-
-
+from models.models import Usuario, Base
 
 # Conectar ao banco
 engine = create_engine('sqlite:///database.db')
@@ -24,12 +20,7 @@ def criar_usuario(nome: str, idade:int) -> Usuario:
     # Salvar no banco
     session.commit()
     return novo_usuario
-if __name__ == 'main':
-    print("Meu primeiro banco de dados!")
-    novo_usuario = criar_usuario(nome = "Geppeto", idade = 50)
-    print(novo_usuario)
-    for usuario in buscar_todos_usuarios():
-        print(usuario)
+
 def buscar_todos_usuarios() -> list[Usuario]:
     try:
         usuarios = session.query(Usuario).all()
@@ -44,3 +35,10 @@ def buscar_usuarios_por_nome(nome:str) -> list[Usuario]:
         print (e)
         usuarios = []
     return usuarios
+
+if __name__ == '__main__':
+    print("Meu primeiro banco de dados!")
+    novo_usuario = criar_usuario(nome = "Geppeto", idade = 50)
+    print(novo_usuario)
+    for usuario in buscar_todos_usuarios():
+        print(usuario)
