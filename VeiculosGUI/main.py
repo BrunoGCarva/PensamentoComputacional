@@ -34,7 +34,7 @@ class SistemaVeiculos:
         self.tela_listagem = tk.Frame(self.container)
         self.tela_listagem_proprietario = tk.Frame(self.container)
         self.tela_listagem_proprietario.grid(row=0, column=0)
-        self.configurar_tela_listagem_proprietario()
+        
 
         # Posiciona as telas no mesmo local
         for tela in (self.tela_principal, self.tela_cadastro,self.tela_cadastro_proprietario, self.tela_listagem,self.tela_listagem_proprietario):
